@@ -1,3 +1,4 @@
 .nvchecker/
 report.md
 issue.md
+__pycache__/

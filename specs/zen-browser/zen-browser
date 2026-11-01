@@ -1,11 +1,6 @@
 #!/usr/bin/bash
 # Launcher for Zen Browser, installed in /opt/zen.
 
-if [ -z "$MOZ_DISABLE_WAYLAND" ] && [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  export MOZ_ENABLE_WAYLAND=1
-  export MOZ_DBUS_REMOTE=1
-fi
-
 export MOZ_APP_LAUNCHER="$0"
 
 exec /opt/zen/zen-bin "$@"

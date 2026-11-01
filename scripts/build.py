@@ -17,21 +17,11 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import tomllib
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-SPECS = ROOT / "specs"
+from common import ROOT, SPECS, load_packages, log
+
 DEFAULT_PROJECT = os.environ.get("COPR_PROJECT", "apognu/fedora-pkgs")
-
-
-def log(*args):
-    print(*args, file=sys.stderr, flush=True)
-
-
-def load_packages():
-    with open(ROOT / "packages.toml", "rb") as f:
-        return {name: conf.get("deps", []) for name, conf in tomllib.load(f).items()}
 
 
 def all_deps(packages, pkg):
@@ -68,7 +58,9 @@ def layers(packages, selected):
 
 
 def build_srpm(pkg, workdir):
-    sourcedir = workdir / pkg
+    sourcedir = workdir / pkg / "sources"
+    srpmdir = workdir / pkg / "srpm"
+
     shutil.copytree(SPECS / pkg, sourcedir)
 
     spec = sourcedir / f"{pkg}.spec"
@@ -79,13 +71,13 @@ def build_srpm(pkg, workdir):
         [
             "rpmbuild", "-bs", spec,
             "--define", f"_sourcedir {sourcedir}",
-            "--define", f"_srcrpmdir {workdir}",
+            "--define", f"_srcrpmdir {srpmdir}",
         ],
         check=True,
         stdout=subprocess.DEVNULL,
     )
 
-    srpms = [p for p in workdir.glob("*.src.rpm") if p.name.rsplit("-", 2)[0] == pkg]
+    srpms = list(srpmdir.glob("*.src.rpm"))
 
     if len(srpms) != 1:
         raise RuntimeError(f"expected one SRPM for {pkg}, found {srpms}")
@@ -119,6 +111,7 @@ def main():
     parser.add_argument("--project", default=DEFAULT_PROJECT, help=f"COPR project (default: {DEFAULT_PROJECT})")
     parser.add_argument("--report", type=Path, help="write a Markdown report to this file")
     parser.add_argument("--dry-run", action="store_true", help="print the build plan and exit")
+    parser.add_argument("--order", action="store_true", help="print the packages in build order and exit")
     args = parser.parse_args()
 
     packages = load_packages()
@@ -131,6 +124,10 @@ def main():
         sys.exit(f"unknown packages: {' '.join(unknown)}")
 
     plan = layers(packages, selected)
+
+    if args.order:
+        print(" ".join(pkg for layer in plan for pkg in layer))
+        return
 
     for i, layer in enumerate(plan, 1):
         log(f"layer {i}: {' '.join(layer)}")

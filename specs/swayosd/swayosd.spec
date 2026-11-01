@@ -33,8 +33,7 @@ A GTK based on-screen display (OSD) for keyboard shortcuts like caps-lock and
 volume, for Wayland compositors such as Hyprland and Sway.
 
 %prep
-%autosetup -p1 -n SwayOSD-%{version}
-tar xf %{SOURCE1}
+%autosetup -p1 -n SwayOSD-%{version} -a1
 
 # Use the system toolchain, not the nightly one pinned for rustup
 rm -f rust-toolchain.toml

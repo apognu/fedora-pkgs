@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Build one or more packages locally inside a Fedora container.
 #
-# Previously built RPMs are exposed to later builds through a local
-# repository, so packages can be built in dependency order:
+# Packages are built in dependency order, and previously built RPMs are
+# exposed to later builds through a local repository. Dependencies are not
+# added automatically: they must be listed or already built in $OUT.
 #
-#   scripts/local-build.sh hyprutils hyprlang
+#   scripts/local-build.sh hyprlang hyprutils
+#   scripts/local-build.sh all
 
 set -euo pipefail
 
@@ -12,9 +14,11 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="${OUT:-/tmp/copr-out}"
 IMAGE="${IMAGE:-registry.fedoraproject.org/fedora:44}"
 
+read -ra PACKAGES <<< "$(python3 "$ROOT/scripts/build.py" --order "$@")"
+
 mkdir -p "$OUT/repo" "$OUT/cache"
 
-for pkg in "$@"; do
+for pkg in "${PACKAGES[@]}"; do
   echo ">>> building $pkg"
 
   podman run --rm \

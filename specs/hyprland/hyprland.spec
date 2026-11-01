@@ -88,11 +88,9 @@ Header and protocol files needed to build Hyprland plugins.
 %cmake_install
 
 # Upstream installs the target in $libdir/systemd/user.
-if [ -f %{buildroot}%{_libdir}/systemd/user/hyprland-session.target ]; then
-  install -Dm0644 %{buildroot}%{_libdir}/systemd/user/hyprland-session.target \
-    %{buildroot}%{_userunitdir}/hyprland-session.target
-  rm -rf %{buildroot}%{_libdir}/systemd
-fi
+mkdir -p %{buildroot}%{_userunitdir}
+mv %{buildroot}%{_libdir}/systemd/user/hyprland-session.target %{buildroot}%{_userunitdir}/
+rm -rf %{buildroot}%{_libdir}/systemd
 
 %files
 %license LICENSE

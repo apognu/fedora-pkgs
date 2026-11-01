@@ -11,10 +11,6 @@ SOURCEDIR="$2"
 VERSION="$(rpmspec -q --srpm --qf '%{version}' "$SPEC")"
 VENDOR="$SOURCEDIR/swayosd-$VERSION-vendor.tar.gz"
 
-if [[ -f "$VENDOR" ]]; then
-  exit 0
-fi
-
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 

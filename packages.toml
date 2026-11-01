@@ -24,7 +24,7 @@ deps = ["hyprutils"]
 deps = ["hyprutils"]
 
 [hyprcursor]
-deps = ["hyprlang", "hyprutils"]
+deps = ["hyprlang"]
 
 [hyprgraphics]
 deps = ["hyprutils"]
@@ -62,7 +62,7 @@ deps = ["hyprgraphics", "hyprlang", "hyprutils", "hyprwayland-scanner"]
 deps = ["hyprland-protocols", "hyprlang", "hyprtoolkit", "hyprutils", "hyprwayland-scanner"]
 
 [swayosd]
-deps = []
+deps = ["gtk4-layer-shell"]
 
 [zen-browser]
 deps = []

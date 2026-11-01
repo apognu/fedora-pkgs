@@ -82,6 +82,9 @@ jobs:
         run: |
           git add specs
           git commit -m "Update packages" -m "Rebuilt: $PACKAGES"
+
+          # In case something was pushed during the build
+          git pull --rebase
           git push
 
       - name: Report failure
