@@ -76,5 +76,8 @@ deps = []
 [appmenu-glib-translator]
 deps = []
 
+[gtk4-layer-shell]
+deps = []
+
 [astal]
-deps = ["appmenu-glib-translator", "libcava", "wl-vapi-gen"]
+deps = ["appmenu-glib-translator", "gtk4-layer-shell", "libcava", "wl-vapi-gen"]
