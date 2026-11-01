@@ -1,0 +1,80 @@
+# Packages built in this repository, with their in-repository build
+# dependencies. Build layers and reverse-dependency rebuilds are computed
+# from this graph.
+
+[hyprwayland-scanner]
+deps = []
+
+[hyprland-protocols]
+deps = []
+
+[glaze-v7]
+deps = []
+
+["lua5.5"]
+deps = []
+
+[hyprutils]
+deps = []
+
+[hyprlang]
+deps = ["hyprutils"]
+
+[hyprwire]
+deps = ["hyprutils"]
+
+[hyprcursor]
+deps = ["hyprlang", "hyprutils"]
+
+[hyprgraphics]
+deps = ["hyprutils"]
+
+[aquamarine]
+deps = ["hyprutils", "hyprwayland-scanner"]
+
+[hyprtoolkit]
+deps = ["aquamarine", "hyprgraphics", "hyprlang", "hyprutils", "hyprwayland-scanner"]
+
+[hyprland-guiutils]
+deps = ["aquamarine", "hyprgraphics", "hyprlang", "hyprtoolkit", "hyprutils"]
+
+[hyprland]
+deps = [
+  "aquamarine",
+  "glaze-v7",
+  "hyprcursor",
+  "hyprgraphics",
+  "hyprland-protocols",
+  "hyprlang",
+  "hyprutils",
+  "hyprwayland-scanner",
+  "hyprwire",
+  "lua5.5",
+]
+
+[hypridle]
+deps = ["hyprland-protocols", "hyprlang", "hyprutils", "hyprwayland-scanner"]
+
+[hyprlock]
+deps = ["hyprgraphics", "hyprlang", "hyprutils", "hyprwayland-scanner"]
+
+[xdg-desktop-portal-hyprland]
+deps = ["hyprland-protocols", "hyprlang", "hyprtoolkit", "hyprutils", "hyprwayland-scanner"]
+
+[swayosd]
+deps = []
+
+[zen-browser]
+deps = []
+
+[wl-vapi-gen]
+deps = []
+
+[libcava]
+deps = []
+
+[appmenu-glib-translator]
+deps = []
+
+[astal]
+deps = ["appmenu-glib-translator", "libcava", "wl-vapi-gen"]

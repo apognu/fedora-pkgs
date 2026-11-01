@@ -1,0 +1,132 @@
+# Current versions are read from the specs by scripts/bump.py, oldver is
+# only declared because nvchecker requires it to write newver.
+[__config__]
+oldver = ".nvchecker/oldver.json"
+newver = ".nvchecker/newver.json"
+
+[hyprwayland-scanner]
+source = "github"
+github = "hyprwm/hyprwayland-scanner"
+use_max_tag = true
+prefix = "v"
+
+[hyprland-protocols]
+source = "github"
+github = "hyprwm/hyprland-protocols"
+use_max_tag = true
+prefix = "v"
+
+[glaze-v7]
+source = "github"
+github = "stephenberry/glaze"
+use_max_tag = true
+include_regex = "v?7\\.[0-9.]+"
+prefix = "v"
+
+["lua5.5"]
+source = "regex"
+url = "https://www.lua.org/ftp/"
+regex = "lua-(5\\.5\\.[0-9]+)\\.tar\\.gz"
+
+[hyprutils]
+source = "github"
+github = "hyprwm/hyprutils"
+use_max_tag = true
+prefix = "v"
+
+[hyprlang]
+source = "github"
+github = "hyprwm/hyprlang"
+use_max_tag = true
+prefix = "v"
+
+[hyprwire]
+source = "github"
+github = "hyprwm/hyprwire"
+use_max_tag = true
+prefix = "v"
+
+[hyprcursor]
+source = "github"
+github = "hyprwm/hyprcursor"
+use_max_tag = true
+prefix = "v"
+
+[hyprgraphics]
+source = "github"
+github = "hyprwm/hyprgraphics"
+use_max_tag = true
+prefix = "v"
+
+[aquamarine]
+source = "github"
+github = "hyprwm/aquamarine"
+use_max_tag = true
+prefix = "v"
+
+[hyprtoolkit]
+source = "github"
+github = "hyprwm/hyprtoolkit"
+use_max_tag = true
+prefix = "v"
+
+[hyprland-guiutils]
+source = "github"
+github = "hyprwm/hyprland-guiutils"
+use_max_tag = true
+prefix = "v"
+
+[hyprland]
+source = "github"
+github = "hyprwm/Hyprland"
+use_max_tag = true
+prefix = "v"
+
+[hypridle]
+source = "github"
+github = "hyprwm/hypridle"
+use_max_tag = true
+prefix = "v"
+
+[hyprlock]
+source = "github"
+github = "hyprwm/hyprlock"
+use_max_tag = true
+prefix = "v"
+
+[xdg-desktop-portal-hyprland]
+source = "github"
+github = "hyprwm/xdg-desktop-portal-hyprland"
+use_max_tag = true
+prefix = "v"
+
+[swayosd]
+source = "github"
+github = "ErikReider/SwayOSD"
+use_max_tag = true
+prefix = "v"
+
+[zen-browser]
+source = "github"
+github = "zen-browser/desktop"
+use_latest_release = true
+
+[wl-vapi-gen]
+source = "github"
+github = "kotontrion/wl-vapi-gen"
+use_max_tag = true
+
+[libcava]
+source = "github"
+github = "LukashonakV/cava"
+use_max_tag = true
+
+[appmenu-glib-translator]
+source = "gitlab"
+gitlab = "vala-panel-project/vala-panel-appmenu"
+use_max_tag = true
+
+[astal]
+source = "github"
+github = "Aylur/astal"
+branch = "main"

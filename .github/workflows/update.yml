@@ -1,0 +1,108 @@
+name: Update and build
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: "Build these packages without checking upstream (space-separated, or `all`)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: copr
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:44
+
+    steps:
+      # Installed first and on their own, so failures can always be reported
+      - name: Install git and gh
+        run: dnf -y install --setopt=install_weak_deps=False gh git-core
+
+      - name: Install tools
+        run: |
+          dnf -y install --setopt=install_weak_deps=False \
+            cargo copr-cli python3 rpm-build rpmdevtools
+
+          # nvchecker is not packaged in Fedora
+          python3 -m venv /opt/nvchecker
+          /opt/nvchecker/bin/pip install nvchecker
+          echo /opt/nvchecker/bin >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Check upstream versions
+        id: bump
+        if: inputs.packages == ''
+        env:
+          NVCHECKER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/bump.py
+
+      - name: Select packages
+        id: select
+        env:
+          FORCED: ${{ inputs.packages }}
+          BUMPED: ${{ steps.bump.outputs.packages }}
+        run: echo "packages=${FORCED:-$BUMPED}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure COPR
+        if: steps.select.outputs.packages != ''
+        env:
+          COPR_CONFIG: ${{ secrets.COPR_CONFIG }}
+        run: |
+          mkdir -p ~/.config
+          printf '%s\n' "$COPR_CONFIG" > ~/.config/copr
+
+      - name: Build
+        if: steps.select.outputs.packages != ''
+        env:
+          PACKAGES: ${{ steps.select.outputs.packages }}
+        run: python3 scripts/build.py --report report.md $PACKAGES
+
+      - name: Commit updated specs
+        if: success() && steps.bump.outputs.packages != ''
+        env:
+          PACKAGES: ${{ steps.bump.outputs.packages }}
+        run: |
+          git add specs
+          git commit -m "Update packages" -m "Rebuilt: $PACKAGES"
+          git push
+
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "Build failed in $RUN_URL"
+            echo
+            cat report.md 2>/dev/null || echo "No build report, the job failed before building."
+          } > issue.md
+
+          gh label create build-failure --color d73a4a --force
+
+          issue="$(gh issue list --label build-failure --state open --json number --jq '.[0].number')"
+
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body-file issue.md
+          else
+            gh issue create --title "COPR build failure" --label build-failure --body-file issue.md
+          fi
