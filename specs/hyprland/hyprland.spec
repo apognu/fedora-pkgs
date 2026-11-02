@@ -1,6 +1,6 @@
 Name:           hyprland
 Version:        0.57.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Dynamic tiling Wayland compositor that doesn't sacrifice on its looks
 License:        BSD-3-Clause
 URL:            https://github.com/hyprwm/Hyprland
