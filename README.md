@@ -36,3 +36,4 @@ sudo dnf copr enable apognu/fedora-pkgs
 | libcava                     | LukashonakV/cava                                  |
 | wl-vapi-gen                 | kotontrion/wl-vapi-gen                            |
 | gtk4-layer-shell            | wmww/gtk4-layer-shell                             |
+| probo-agent                 | getprobo/probo (official binaries)                |

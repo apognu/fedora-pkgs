@@ -1,0 +1,27 @@
+[Unit]
+Description=Probo device posture agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/probo-agent run --dir /var/lib/probo-agent
+Restart=always
+RestartSec=10
+
+SuccessExitStatus=75
+User=probo
+Group=probo
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+AmbientCapabilities=CAP_NET_ADMIN
+
+StateDirectory=probo-agent
+StateDirectoryMode=0700
+RuntimeDirectory=probo-agent
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
+

@@ -136,3 +136,10 @@ prefix = "v"
 source = "github"
 github = "Aylur/astal"
 branch = "main"
+
+[probo-agent]
+source = "github"
+github = "getprobo/probo"
+use_max_tag = true
+include_regex = "probo-agent/v[0-9.]+"
+prefix = "probo-agent/v"

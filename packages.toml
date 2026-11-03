@@ -81,3 +81,6 @@ deps = []
 
 [astal]
 deps = ["appmenu-glib-translator", "gtk4-layer-shell", "libcava", "wl-vapi-gen"]
+
+[probo-agent]
+deps = []
