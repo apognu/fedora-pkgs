@@ -1,5 +1,5 @@
-# Parallel-installable Lua 5.5 library, needed by Hyprland >= 0.57.
-# Drop this package once Fedora ships Lua 5.5 in its main repositories.
+# Parallel-installable Lua 5.5 library, needed by Hyprland >= 0.57 on Fedora
+# 44 (Fedora 45 ships Lua 5.5). Drop this package once Fedora 44 is EOL.
 
 %global major_version 5.5
 

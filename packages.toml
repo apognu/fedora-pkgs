@@ -1,6 +1,9 @@
 # Packages built in this repository, with their in-repository build
 # dependencies. Build layers and reverse-dependency rebuilds are computed
 # from this graph.
+#
+# `releases` restricts a package to some Fedora releases (default: all those
+# listed in RELEASES, in scripts/common.py).
 
 [hyprwayland-scanner]
 deps = []
@@ -11,8 +14,10 @@ deps = []
 [glaze-v7]
 deps = []
 
+# Fedora 45 ships Lua 5.5
 ["lua5.5"]
 deps = []
+releases = [44]
 
 [hyprutils]
 deps = []

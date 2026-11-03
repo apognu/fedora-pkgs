@@ -5,16 +5,20 @@
 # exposed to later builds through a local repository. Dependencies are not
 # added automatically: they must be listed or already built in $OUT.
 #
+# $FEDORA selects the Fedora release (default: 44). Packages that do not
+# target that release are left out.
+#
 #   scripts/local-build.sh hyprlang hyprutils
-#   scripts/local-build.sh all
+#   FEDORA=45 scripts/local-build.sh all
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="${OUT:-/tmp/copr-out}"
-IMAGE="${IMAGE:-registry.fedoraproject.org/fedora:44}"
+FEDORA="${FEDORA:-44}"
+OUT="${OUT:-/tmp/copr-out/$FEDORA}"
+IMAGE="${IMAGE:-registry.fedoraproject.org/fedora:$FEDORA}"
 
-read -ra PACKAGES <<< "$(python3 "$ROOT/scripts/build.py" --order "$@")"
+read -ra PACKAGES <<< "$(python3 "$ROOT/scripts/build.py" --order --release "$FEDORA" "$@")"
 
 mkdir -p "$OUT/repo" "$OUT/cache"
 

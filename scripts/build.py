@@ -7,6 +7,10 @@ packages.toml: each layer is submitted at once and waited for before the
 next one starts, so that packages are built against freshly built
 dependencies. Packages whose dependencies failed are skipped.
 
+Each package is submitted to the chroots of the Fedora releases it targets
+(the `releases` key in packages.toml, all supported releases by default).
+--release restricts the build to a single release.
+
 A Markdown report is written to --report, if given.
 """
 
@@ -19,7 +23,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from common import ROOT, SPECS, load_packages, log
+from common import RELEASES, ROOT, SPECS, load_packages, load_releases, log
 
 DEFAULT_PROJECT = os.environ.get("COPR_PROJECT", "apognu/fedora-pkgs")
 
@@ -85,9 +89,11 @@ def build_srpm(pkg, workdir):
     return srpms[0]
 
 
-def submit(project, srpm):
+def submit(project, srpm, releases):
+    chroots = [arg for release in releases for arg in ("-r", f"fedora-{release}-x86_64")]
+
     proc = subprocess.run(
-        ["copr-cli", "build", "--nowait", project, srpm],
+        ["copr-cli", "build", "--nowait", *chroots, project, srpm],
         check=True,
         capture_output=True,
         text=True,
@@ -109,12 +115,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("packages", nargs="*", help="packages to build, or `all` (default: all)")
     parser.add_argument("--project", default=DEFAULT_PROJECT, help=f"COPR project (default: {DEFAULT_PROJECT})")
+    parser.add_argument("--release", type=int, choices=RELEASES, help="only build for this Fedora release")
     parser.add_argument("--report", type=Path, help="write a Markdown report to this file")
     parser.add_argument("--dry-run", action="store_true", help="print the build plan and exit")
     parser.add_argument("--order", action="store_true", help="print the packages in build order and exit")
     args = parser.parse_args()
 
     packages = load_packages()
+    releases = load_releases()
     selected = args.packages or ["all"]
 
     if selected == ["all"]:
@@ -123,7 +131,11 @@ def main():
     if unknown := [pkg for pkg in selected if pkg not in packages]:
         sys.exit(f"unknown packages: {' '.join(unknown)}")
 
-    plan = layers(packages, selected)
+    if args.release:
+        releases = {pkg: [r for r in rels if r == args.release] for pkg, rels in releases.items()}
+
+    results = {pkg: ("not applicable", None) for pkg in selected if not releases[pkg]}
+    plan = layers(packages, [pkg for pkg in selected if releases[pkg]])
 
     if args.order:
         print(" ".join(pkg for layer in plan for pkg in layer))
@@ -132,10 +144,12 @@ def main():
     for i, layer in enumerate(plan, 1):
         log(f"layer {i}: {' '.join(layer)}")
 
+    for pkg in results:
+        log(f"{pkg}: not built for Fedora {args.release}")
+
     if args.dry_run:
         return
 
-    results = {}
     failed = set()
     url = f"https://copr.fedorainfracloud.org/coprs/{args.project}/build"
 
@@ -154,8 +168,8 @@ def main():
 
                 try:
                     srpm = build_srpm(pkg, workdir)
-                    builds[pkg] = submit(args.project, srpm)
-                    log(f"{pkg}: submitted {url}/{builds[pkg]}/")
+                    builds[pkg] = submit(args.project, srpm, releases[pkg])
+                    log(f"{pkg}: submitted for Fedora {', '.join(map(str, releases[pkg]))}: {url}/{builds[pkg]}/")
                 except (subprocess.CalledProcessError, RuntimeError) as e:
                     log(f"{pkg}: SRPM or submission failed: {e}")
 

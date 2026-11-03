@@ -19,7 +19,11 @@ BuildRequires:  hyprlang-devel
 BuildRequires:  hyprutils-devel
 BuildRequires:  hyprwayland-scanner-devel
 BuildRequires:  hyprwire-devel
+%if 0%{?fedora} >= 45
+BuildRequires:  pkgconfig(lua) >= 5.5
+%else
 BuildRequires:  lua5.5-devel
+%endif
 BuildRequires:  readline-devel
 BuildRequires:  udis86-devel
 BuildRequires:  pkgconfig(cairo)

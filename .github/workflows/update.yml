@@ -11,6 +11,13 @@ on:
         required: false
         default: ""
 
+      # Keep in sync with RELEASES in scripts/common.py
+      release:
+        description: "Only build for this Fedora release"
+        type: choice
+        options: ["all", "44", "45"]
+        default: "all"
+
 permissions:
   contents: write
   issues: write
@@ -73,7 +80,15 @@ jobs:
         if: steps.select.outputs.packages != ''
         env:
           PACKAGES: ${{ steps.select.outputs.packages }}
-        run: python3 scripts/build.py --report report.md $PACKAGES
+          RELEASE: ${{ inputs.release }}
+        run: |
+          args=()
+
+          if [ -n "$RELEASE" ] && [ "$RELEASE" != all ]; then
+            args+=(--release "$RELEASE")
+          fi
+
+          python3 scripts/build.py --report report.md "${args[@]}" $PACKAGES
 
       - name: Commit updated specs
         if: success() && steps.bump.outputs.packages != ''

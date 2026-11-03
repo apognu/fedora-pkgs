@@ -3,7 +3,7 @@
 Personal Fedora COPR repository: the Hyprland stack, SwayOSD, Zen Browser and
 Astal (with every dependency Fedora does not ship).
 
-Targets Fedora 44, x86_64.
+Targets Fedora 44 and 45, x86_64.
 
 ```sh
 sudo dnf copr enable apognu/fedora-pkgs
@@ -28,7 +28,7 @@ sudo dnf copr enable apognu/fedora-pkgs
 | hyprlock                    | hyprwm/hyprlock                                   |
 | xdg-desktop-portal-hyprland | hyprwm/xdg-desktop-portal-hyprland                |
 | glaze-v7                    | stephenberry/glaze (7.x, compat for Hyprland)     |
-| lua5.5                      | lua.org (library only, until Fedora ships 5.5)    |
+| lua5.5                      | lua.org (library only, Fedora 44 only)            |
 | swayosd                     | ErikReider/SwayOSD                                |
 | zen-browser                 | zen-browser/desktop (official binaries)           |
 | astal                       | Aylur/astal (main branch, one subpackage per lib) |
