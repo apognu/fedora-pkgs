@@ -126,12 +126,6 @@ source = "gitlab"
 gitlab = "vala-panel-project/vala-panel-appmenu"
 use_max_tag = true
 
-[gtk4-layer-shell]
-source = "github"
-github = "wmww/gtk4-layer-shell"
-use_max_tag = true
-prefix = "v"
-
 [astal]
 source = "github"
 github = "Aylur/astal"

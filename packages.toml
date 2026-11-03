@@ -67,7 +67,7 @@ deps = ["hyprgraphics", "hyprlang", "hyprutils", "hyprwayland-scanner"]
 deps = ["hyprland-protocols", "hyprlang", "hyprtoolkit", "hyprutils", "hyprwayland-scanner"]
 
 [swayosd]
-deps = ["gtk4-layer-shell"]
+deps = []
 
 [zen-browser]
 deps = []
@@ -81,11 +81,8 @@ deps = []
 [appmenu-glib-translator]
 deps = []
 
-[gtk4-layer-shell]
-deps = []
-
 [astal]
-deps = ["appmenu-glib-translator", "gtk4-layer-shell", "libcava", "wl-vapi-gen"]
+deps = ["appmenu-glib-translator", "libcava", "wl-vapi-gen"]
 
 [probo-agent]
 deps = []
