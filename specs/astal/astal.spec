@@ -1,7 +1,7 @@
-%global commit      cbcd9f49dd6b9638dc5623b56cc6e1e0a60b593e
+%global commit      ab2ab64f79c571bb5fef5c03bdb4d8afe642e758
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 # Commit date as reported by nvchecker (YYYYMMDD.HHMMSS), keeps snapshots ordered
-%global commitdate  20260923.200029
+%global commitdate  20261106.224639
 
 # Built in dependency order
 %global astal_libs astal/io quarrel wl/wl astal/gtk3 astal/gtk4 wl/wl4 apps auth battery bluetooth brightness cava greet hyprland idle-notify mpris network notifd powerprofiles river tray wireplumber workspace
