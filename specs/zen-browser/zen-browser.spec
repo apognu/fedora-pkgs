@@ -4,7 +4,7 @@
 %global __requires_exclude_from ^/opt/zen/.*$
 
 Name:           zen-browser
-Version:        1.24.1b
+Version:        1.24.2b
 Release:        1%{?dist}
 Summary:        Zen Browser, a Firefox-based browser focused on simplicity and design
 License:        MPL-2.0
