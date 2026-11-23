@@ -2,7 +2,7 @@
 %global _vpath_srcdir subprojects/appmenu-glib-translator
 
 Name:           appmenu-glib-translator
-Version:        25.04
+Version:        26.11.1
 Release:        1%{?dist}
 Summary:        Translator from DBusMenu to GMenuModel
 License:        LGPL-3.0-or-later

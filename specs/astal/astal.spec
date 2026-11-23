@@ -8,7 +8,7 @@
 
 Name:           astal
 Version:        0~git%{commitdate}.%{shortcommit}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Building blocks for creating custom desktop shells
 License:        LGPL-2.1-only
 URL:            https://github.com/Aylur/astal
