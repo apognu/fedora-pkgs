@@ -1,6 +1,6 @@
 Name:           hyprgraphics
-Version:        0.6.0
-Release:        2%{?dist}
+Version:        0.7.0
+Release:        1%{?dist}
 Summary:        Hyprland graphics and resource utilities
 License:        BSD-3-Clause
 URL:            https://github.com/hyprwm/hyprgraphics

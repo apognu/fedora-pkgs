@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:           probo-agent
-Version:        0.10.0
+Version:        0.10.1
 Release:        1%{?dist}
 Summary:        Probo device posture agent
 License:        MIT
