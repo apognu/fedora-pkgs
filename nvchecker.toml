@@ -137,3 +137,9 @@ github = "getprobo/probo"
 use_max_tag = true
 include_regex = "probo-agent/v[0-9.]+"
 prefix = "probo-agent/v"
+
+[slk]
+source = "github"
+github = "gammons/slk"
+use_latest_release = true
+prefix = "v"
