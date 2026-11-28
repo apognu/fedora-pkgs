@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:           slk
-Version:        0.52.0
+Version:        0.53.1
 Release:        1%{?dist}
 Summary:        Keyboard-driven Slack TUI
 License:        MIT

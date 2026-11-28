@@ -1,14 +1,14 @@
-%global commit      b7aaf4ce69ebb3c5b1818d524e04b23bc755a97d
+%global commit      c1d07137bddac97ddbbfd05a3f7aadd61436c5bc
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 # Commit date as reported by nvchecker (YYYYMMDD.HHMMSS), keeps snapshots ordered
-%global commitdate  20261108.102027
+%global commitdate  20261128.122733
 
 # Built in dependency order
 %global astal_libs astal/io quarrel wl/wl astal/gtk3 astal/gtk4 wl/wl4 apps auth battery bluetooth brightness cava greet hyprland idle-notify mpris network notifd powerprofiles river tray wireplumber workspace
 
 Name:           astal
 Version:        0~git%{commitdate}.%{shortcommit}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Building blocks for creating custom desktop shells
 License:        LGPL-2.1-only
 URL:            https://github.com/Aylur/astal
